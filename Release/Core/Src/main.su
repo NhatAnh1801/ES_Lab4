@@ -1,0 +1,11 @@
+main.c:130:6:SystemClock_Config	88	static,ignoring_inline_asm
+main.c:171:6:system_init	8	static
+main.c:183:6:test_LedDebug	0	static
+main.c:190:6:test_7seg	8	static
+main.c:196:6:test_button	24	static
+main.c:205:6:updateTime	8	static
+main.c:215:9:isButtonUp	0	static
+main.c:222:9:isButtonDown	0	static
+main.c:229:6:displayTime	32	static
+main.c:76:5:main	8	static
+main.c:244:6:Error_Handler	0	static,ignoring_inline_asm
