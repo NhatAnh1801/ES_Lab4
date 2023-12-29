@@ -7,20 +7,11 @@
 
 #include "software_timer.h"
 
-#define TIMER_CYCLE_2 1
-
 //software timer variable
-uint16_t flag_timer2 = 0;
-uint16_t timer2_counter = 0;
-uint16_t timer2_MUL = 0;
+uint16_t flag_timer[NUM_OF_TIMER];
+uint16_t timer2_counter[NUM_OF_TIMER];
+uint16_t timer2_MUL[NUM_OF_TIMER];
 
-uint16_t flag_timer1 = 0;
-uint16_t timer1_counter = 0;
-uint16_t timer1_MUL = 0;
-
-uint16_t flag_timer0 = 0;
-uint16_t timer0_counter = 0;
-uint16_t timer0_MUL = 0;
 
 /**
   * @brief  Init timer interrupt
@@ -29,29 +20,24 @@ uint16_t timer0_MUL = 0;
   */
 void timer_init(){
 	HAL_TIM_Base_Start_IT(&htim2);
+	for(uint8_t i = 0; i < NUM_OF_TIMER; i++){
+		flag_timer[i] = 0;
+		timer2_MUL[i] = 0;
+		timer2_counter[i] = 0;
+	}
 }
-
 
 /**
   * @brief  Set duration of software timer interrupt
   * @param  duration Duration of software timer interrupt
   * @retval None
   */
-void setTimer2(uint16_t duration){
-	timer2_MUL = duration/TIMER_CYCLE_2;
-	timer2_counter = timer2_MUL;
-	flag_timer2 = 0;
+void setTimer2(uint16_t duration, uint8_t index){
+	timer2_MUL[index] = duration/TIMER_CYCLE_2;
+	timer2_counter[index] = timer2_MUL[index];
+	flag_timer[index] = 0;
 }
-void setTimer1(uint16_t duration){
-	timer1_MUL = duration/TIMER_CYCLE_2;
-	timer1_counter = timer1_MUL;
-	flag_timer1 = 0;
-}
-void setTimer0(uint16_t duration){
-	timer0_MUL = duration/TIMER_CYCLE_2;
-	timer0_counter = timer0_MUL;
-	flag_timer0 = 0;
-}
+
 /**
   * @brief  Timer interrupt routine
   * @param  htim TIM Base handle
@@ -60,29 +46,17 @@ void setTimer0(uint16_t duration){
   */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	if(htim->Instance == TIM2){
-		if(timer2_counter > 0){
-			timer2_counter--;
-			if(timer2_counter == 0) {
-				flag_timer2 = 1;
-				timer2_counter = timer2_MUL;
-			}
-		}
-		if(timer1_counter > 0){
-			timer1_counter--;
-			if(timer1_counter == 0) {
-				flag_timer1 = 1;
-				timer1_counter = timer1_MUL;
-			}
-		}
-		if(timer0_counter > 0){
-			timer0_counter--;
-			if(timer0_counter == 0) {
-				flag_timer0 = 1;
-				timer0_counter = timer0_MUL;
+		for(uint8_t i = 0; i < NUM_OF_TIMER; i++){
+			if(timer2_counter[i] > 0){
+				timer2_counter[i]--;
+				if(timer2_counter[i] == 0) {
+					flag_timer[i] = 1;
+					timer2_counter[i] = timer2_MUL[i];
+				}
 			}
 		}
 		// 1ms interrupt here
-		led7_Scan();
+		//button_Scan();
 	}
 }
 

@@ -5,10 +5,6 @@
  *      Author: HaHuyen
  */
 #include "button.h"
-#include "ds3231.h"
-
-
-
 
 uint16_t button_count[16];
 uint16_t spi_button = 0x0000;
@@ -35,12 +31,60 @@ void button_Scan(){
 		  }
 		  if(spi_button & mask) button_count[button_index] = 0;
 		  else button_count[button_index]++;
+//		  if(spi_button & mask) button_count[i] = 0;
+//		  else button_count[i]++;
 		  mask = mask >> 1;
 	  }
 }
 
+uint8_t isButtonUp(){
+    if (button_count[3] == 1){
+    	button_count[3] = 0;
+        return 1;
+	}
+    else
+        return 0;
+}
 
+uint8_t isButtonE(){
+    if (button_count[12] == 1){
+    	button_count[12] = 0;
+        return 1;
+    }
+    else
+        return 0;
+}
 
+uint8_t isButtonDown(){
+    if (button_count[7] == 1){
+    	button_count[7] = 0;
+        return 1;
+    }
+    else
+        return 0;
+}
 
+uint8_t isButtonB(){
+	if(button_count[14] == 1){
+		button_count[14] = 0;
+		return 1;
+	}
+	else return 0;
+}
 
+uint8_t isButton4(){
+	if(button_count[4] == 1){
+		button_count[4] = 0;
+		return 1;
+	}
+	else return 0;
+}
+
+uint8_t isButton1(){
+	if(button_count[0] == 1){
+		button_count[0] = 0;
+		return 1;
+	}
+	else return 0;
+}
 

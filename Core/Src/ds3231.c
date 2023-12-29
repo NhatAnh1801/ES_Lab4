@@ -27,7 +27,6 @@ void ds3231_init(){
 	ds3231_buffer[4] = DEC2BCD(15); //date
 	ds3231_buffer[5] = DEC2BCD(9);  //month
 	ds3231_buffer[6] = DEC2BCD(23); //year
-	ds3231_Write(0x0E, 0x06);
 	if(HAL_I2C_IsDeviceReady(&hi2c1, DS3231_ADDRESS, 3, 50) != HAL_OK){
 		while(1);
 	};
@@ -48,15 +47,9 @@ void ds3231_ReadTime(){
 	ds3231_month = BCD2DEC(ds3231_buffer[5]);
 	ds3231_year = BCD2DEC(ds3231_buffer[6]);
 }
-void ds3231_StopClock(){
-    uint8_t control;
-    // Read current control register value
-    HAL_I2C_Mem_Read(&hi2c1, DS3231_ADDRESS, 0x0E, I2C_MEMADD_SIZE_8BIT, &control, 1, 10);
-
-    // Set EOSC bit to 0 to stop the clock
-    control &= ~(1 << 7);
-
-    // Write back the modified control register value
-    HAL_I2C_Mem_Write(&hi2c1, DS3231_ADDRESS, 0x0E, I2C_MEMADD_SIZE_8BIT, &control, 1, 10);
+void ds3231_ReadAlarm(){
+	HAL_I2C_Mem_Read(&hi2c1, DS3231_ADDRESS, 0x08, I2C_MEMADD_SIZE_8BIT, ds3231_alarm_buffer, 2, 10);
+	ds3231_alarm_min = BCD2DEC(ds3231_alarm_buffer[0]);
+	ds3231_alarm_hour = BCD2DEC(ds3231_alarm_buffer[1]);
 }
 

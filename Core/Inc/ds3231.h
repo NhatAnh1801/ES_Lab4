@@ -27,6 +27,9 @@ extern uint8_t ds3231_day;
 extern uint8_t ds3231_month;
 extern uint8_t ds3231_year;
 
+uint8_t ds3231_alarm_hour = 0;
+uint8_t ds3231_alarm_min = 0;
+
 void ds3231_init();
 
 void ds3231_Write(uint8_t address, uint8_t value);

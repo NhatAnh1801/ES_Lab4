@@ -35,37 +35,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := Bai4_I2C_Realtimeclock
+BUILD_ARTIFACT_NAME := ES_Lab4
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-Bai4_I2C_Realtimeclock.elf \
+ES_Lab4.elf \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-Bai4_I2C_Realtimeclock.list \
-
-OBJCOPY_HEX += \
-Bai4_I2C_Realtimeclock.hex \
+ES_Lab4.list \
 
 OBJCOPY_BIN += \
-Bai4_I2C_Realtimeclock.bin \
+ES_Lab4.bin \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: Bai4_I2C_Realtimeclock.elf secondary-outputs
+main-build: ES_Lab4.elf secondary-outputs
 
 # Tool invocations
-Bai4_I2C_Realtimeclock.elf: $(OBJS) $(USER_OBJS) C:\Users\ADMIN\Desktop\HK231\Embedded\ system\BKIT_ARM4_Bai4_I2C_Realtimeclock-main\Bai4_I2C_Realtimeclock\STM32F407ZGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Bai4_I2C_Realtimeclock.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\ADMIN\Desktop\HK231\Embedded system\BKIT_ARM4_Bai4_I2C_Realtimeclock-main\Bai4_I2C_Realtimeclock\STM32F407ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Bai4_I2C_Realtimeclock.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+ES_Lab4.elf: $(OBJS) $(USER_OBJS) C:\Users\ADMIN\STM32CubeIDE\workspace_1.7.0\ES_Lab4\STM32F407ZGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "ES_Lab4.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\ADMIN\STM32CubeIDE\workspace_1.7.0\ES_Lab4\STM32F407ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ES_Lab4.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -74,27 +71,22 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Bai4_I2C_Realtimeclock.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Bai4_I2C_Realtimeclock.list"
+ES_Lab4.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "ES_Lab4.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Bai4_I2C_Realtimeclock.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "Bai4_I2C_Realtimeclock.hex"
-	@echo 'Finished building: $@'
-	@echo ' '
-
-Bai4_I2C_Realtimeclock.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "Bai4_I2C_Realtimeclock.bin"
+ES_Lab4.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "ES_Lab4.bin"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(OBJCOPY_HEX)$(SIZE_OUTPUT)$(OBJDUMP_LIST)$(EXECUTABLES)$(OBJS)$(S_DEPS)$(S_UPPER_DEPS)$(C_DEPS)$(OBJCOPY_BIN) Bai4_I2C_Realtimeclock.elf
+	-$(RM) $(SIZE_OUTPUT)$(OBJDUMP_LIST)$(EXECUTABLES)$(OBJS)$(S_DEPS)$(S_UPPER_DEPS)$(C_DEPS)$(OBJCOPY_BIN) ES_Lab4.elf
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

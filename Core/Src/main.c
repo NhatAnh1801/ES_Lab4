@@ -24,7 +24,7 @@
 #include "tim.h"
 #include "gpio.h"
 #include "fsmc.h"
-
+#include "fsm.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "software_timer.h"
@@ -33,12 +33,10 @@
 #include "lcd.h"
 #include "picture.h"
 #include "ds3231.h"
-#include "fsm.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-#define DS3231_ALARM2_REGISTER 0x0B
 
 /* USER CODE END PTD */
 
@@ -55,7 +53,6 @@
 
 /* USER CODE BEGIN PV */
 uint8_t count_led_debug = 0;
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -65,8 +62,6 @@ void system_init();
 void test_LedDebug();
 void displayTime();
 void updateTime();
-void fsm_run();
-
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -116,17 +111,9 @@ int main(void)
  updateTime();
   while (1)
   {
-
+	   Real_time_clk();
+	   Uart_clk();
     /* USER CODE END WHILE */
-	  //TODO
-	  (!flag_timer2);
-	  flag_timer2 = 0;
-
-	  button_Scan();
-	  ds3231_ReadTime();
-	  displayTime();
-	  //GREEN_BLACK_Toggle();
-//	  fsm_run();
 
     /* USER CODE BEGIN 3 */
   }
@@ -188,7 +175,6 @@ void system_init(){
 	  lcd_init();
 	  ds3231_init();
 	  setTimer2(50);
-	  setTimer0(500);
 }
 
 void test_LedDebug(){
@@ -230,17 +216,9 @@ uint8_t isButtonUp()
     else
         return 0;
 }
-
 uint8_t isButtonDown()
 {
     if (button_count[7] == 1)
-        return 1;
-    else
-        return 0;
-}
-uint8_t isButtonE()
-{
-    if (button_count[12] == 1)
         return 1;
     else
         return 0;
@@ -254,18 +232,6 @@ void displayTime(){
 	lcd_ShowIntNum(110, 130, ds3231_month, 2, YELLOW, BLACK, 24);
 	lcd_ShowIntNum(150, 130, ds3231_year, 2, YELLOW, BLACK, 24);
 }
-void ds3231_SetAlarm2(uint8_t hours, uint8_t minutes, uint8_t seconds){
-	//Set Timer
-    ds3231_Write(DS3231_ALARM2_REGISTER + 0, DEC2BCD(seconds) | 0x80);  // Set Alarm2 seconds and enable alarm
-    ds3231_Write(DS3231_ALARM2_REGISTER + 1, DEC2BCD(minutes) | 0x80);  // Set Alarm2 minutes and enable alarm
-    ds3231_Write(DS3231_ALARM2_REGISTER + 2, DEC2BCD(hours) | 0x80);    // Set Alarm2 hours and enable alarm
-}
-void ds3231_EnableAlarm2(){
-	ds3231_Write(0x0E, 0x06);
-}
-
-
-
 /* USER CODE END 4 */
 
 /**

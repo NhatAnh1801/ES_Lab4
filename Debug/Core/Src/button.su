@@ -1,2 +1,8 @@
-button.c:16:6:button_init	8	static
-button.c:20:6:button_Scan	24	static
+button.c:12:6:button_init	8	static
+button.c:16:6:button_Scan	24	static
+button.c:40:9:isButtonUp	4	static
+button.c:49:9:isButtonE	4	static
+button.c:58:9:isButtonDown	4	static
+button.c:67:9:isButtonB	4	static
+button.c:75:9:isButton4	4	static
+button.c:83:9:isButton1	4	static
